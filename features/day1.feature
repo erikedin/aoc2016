@@ -12,17 +12,17 @@ Feature: Walking in a city
     
       Examples: Turning right
         | Direction | Turn  | New direction |
-        | N         | right | E             |
-        | E         | right | S             |
-        | S         | right | W             |
-        | W         | right | N             |
+        | N         | R     | E             |
+        | E         | R     | S             |
+        | S         | R     | W             |
+        | W         | R     | N             |
 
       Examples: Turning left
         | Direction | Turn  | New direction |
-        | N         | left  | W             |
-        | E         | left  | N             |
-        | S         | left  | E             |
-        | W         | left  | S             |
+        | N         | L     | W             |
+        | E         | L     | N             |
+        | S         | L     | E             |
+        | W         | L     | S             |
 
     Scenario Outline: Walking
         Given that I am at <From E> blocks E and <From N> blocks N
@@ -57,3 +57,24 @@ Feature: Walking in a city
           And that I am facing N
          When I follow the instructions "R5, L5, R5, R3"
          Then the distance should be 12
+
+    Scenario: Default position and direction
+        Then I should be at 0 blocks E and 0 blocks N
+         And I should be facing N
+    
+    Scenario: Reading instructions
+        When I read the instructions "R2, L50"
+        Then I should get the turns and distances:
+            | Turn  | Distance |
+            | R     | 2        |
+            | L     | 50       |
+    
+    Scenario Outline: Taxi distance
+        Given that I am at <E> blocks E and <N> blocks N
+         Then the distance should be <Distance>
+
+      Examples: Blocks and what their distances are from origin
+        | E  | N | Distance |
+        |  0 | 0 | 0        |
+        |  2 | 3 | 5        |
+        | -2 | 3 | 5        |

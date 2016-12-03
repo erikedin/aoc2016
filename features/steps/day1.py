@@ -1,37 +1,49 @@
 from behave import *
+from aoc2016.day1 import SantasAgent, Direction, Turn
 
 @given(u'that I have been airdropped into the city')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: background')
+    context.me = SantasAgent()
 
 @given(u'that I am at {e:d} blocks E and {n:d} blocks N')
 def step_impl(context, e, n):
-    raise NotImplementedError(u'STEP: that I am at')
+    context.me.position = (e, n)
 
 @given(u'that I am facing {direction}')
 def step_impl(context, direction):
-    raise NotImplementedError(u'STEP: that I am facing')
+    context.me.facing(Direction.parse(direction))
 
 @when(u'I follow the instructions "{instructions}"')
 def step_impl(context, instructions):
-    raise NotImplementedError(u'STEP: I follow the instructions')
+    context.me.follow(instructions)
 
 @then(u'I should be at {e:d} blocks E and {n:d} blocks N')
 def step_impl(context, e, n):
-    raise NotImplementedError(u'STEP: I should be at')
+    assert context.me.east()  == e
+    assert context.me.north() == n
 
 @then(u'the distance should be {distance:d}')
 def step_impl(context, distance):
-    raise NotImplementedError(u'STEP: the distance should be')
+    assert context.me.distance() == distance
 
 @when(u'I walk {distance:d} blocks')
 def step_impl(context, distance):
-    raise NotImplementedError(u'STEP: I walk')
+    context.me.walk(distance)
 
 @when(u'I turn {turn}')
 def step_impl(context, turn):
-    raise NotImplementedError(u'STEP: I turn')
+    context.me.turn(Turn.parse(turn))
 
 @then(u'I should be facing {direction}')
 def step_impl(context, direction):
-    raise NotImplementedError(u'STEP: I should be facing')
+    assert context.me.direction == Direction.parse(direction)
+
+@when(u'I read the instructions "{instructions}"')
+def step_impl(context, instructions):
+    context.turns_and_distances = context.me.read(instructions)
+
+@then(u'I should get the turns and distances')
+def step_impl(context):
+    expected = [(Turn.parse(row[0]), int(row[1])) 
+                for row in context.table]
+    assert context.turns_and_distances == expected

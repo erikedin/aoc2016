@@ -1,5 +1,5 @@
 from behave import *
-from aoc2016.day1 import SantasAgent, Direction, Turn
+from aoc2016.santasagent import SantasAgent, Direction, Turn
 
 @given(u'that I have been airdropped into the city')
 def step_impl(context):

@@ -11,3 +11,8 @@ def step1(instructions):
     agent = SantasAgent()
     agent.follow(instructions)
     return agent.distance()
+
+def step2(instructions):
+    agent = SantasAgent()
+    agent.follow_to_first_visit_twice(instructions)
+    return agent.distance()

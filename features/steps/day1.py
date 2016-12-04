@@ -47,3 +47,12 @@ def step_impl(context):
     expected = [(Turn.parse(row[0]), int(row[1])) 
                 for row in context.table]
     assert context.turns_and_distances == expected
+
+@when(u'I follow the instructions "{instructions}" and stop at the first location I visit twice')
+def step_impl(context, instructions):
+    context.me.follow_to_first_visit_twice(instructions)
+
+@then(u'I should have visited the locations')
+def step_impl(context):
+    expected_visits = [(int(row[0]), int(row[1])) for row in context.table]
+    assert context.me.visits == expected_visits

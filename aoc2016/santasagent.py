@@ -25,6 +25,7 @@ class SantasAgent(object):
     def __init__(self):
         self.facing(Direction.N)
         self.position = (0, 0)
+        self.visits = [self.position]
     
     def east(self): return self.position[0]
     def north(self): return self.position[1]
@@ -66,3 +67,13 @@ class SantasAgent(object):
         for towards, distance in turns_and_distances:
             self.turn(towards)
             self.walk(distance)
+
+    def follow_to_first_visit_twice(self, instructions):
+        turns_and_distances = self.read(instructions)
+        for towards, distance in turns_and_distances:
+            self.turn(towards)
+            for i in xrange(0, distance):
+                self.walk(1)
+                if self.position in self.visits:
+                    return
+                self.visits.append(self.position)

@@ -1,5 +1,5 @@
 from behave import *
-from aoc2016.triangles import Triangle, TriangleCounter
+from aoc2016.triangles import Triangle, TriangleCounter, make_triangles_by_column
 import aoc2016.day3 as day3
 
 @given(u'a triangle with sides {s1:d} {s2:d} {s3:d}')
@@ -37,6 +37,11 @@ def step_impl(context):
 def step_impl(context):
     sides = day3.parse(context.text.split('\n'))
     context.triangles = [Triangle(*s) for s in sides]
+
+@given(u'the column triangle input')
+def step_impl(context):
+    sides = day3.parse(context.text.split('\n'))
+    context.triangles = make_triangles_by_column(sides)
 
 @when(u'I count the number of possible triangles')
 def step_impl(context):

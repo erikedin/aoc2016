@@ -16,3 +16,13 @@ class TriangleCounter:
     
     def possibles(self):
         return filter(lambda x: x.is_possible(), self.triangles)
+
+def make_triangles_by_column(input):
+    ts = []
+    rest = input[:]
+    while len(rest) > 0:
+        s, rest = rest[:3], rest[3:]
+        ts.append(Triangle(s[0][0], s[1][0], s[2][0]))
+        ts.append(Triangle(s[0][1], s[1][1], s[2][1]))
+        ts.append(Triangle(s[0][2], s[1][2], s[2][2]))
+    return ts

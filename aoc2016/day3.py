@@ -2,7 +2,7 @@
 Solution for day 3 of AoC 2016.
 """
 
-from aoc2016.triangles import Triangle, TriangleCounter
+from aoc2016.triangles import Triangle, TriangleCounter, make_triangles_by_column
 
 def parse(lines):
     """
@@ -14,5 +14,10 @@ def parse(lines):
 
 def step1(input):
     ts = [Triangle(*x) for x in input]
+    counter = TriangleCounter(ts)
+    return len(counter.possibles())
+
+def step2(input):
+    ts = make_triangles_by_column(input)
     counter = TriangleCounter(ts)
     return len(counter.possibles())

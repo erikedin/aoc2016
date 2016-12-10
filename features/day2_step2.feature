@@ -7,9 +7,11 @@ Feature: Find the bathroom code
  Background: I am at a keypad
     Given I am at a keypad like
       """
-      123
-      456
-      789
+        1  
+       234 
+      56789
+       ABC 
+        D  
       """
 
  Scenario: Starting key
@@ -24,7 +26,7 @@ Feature: Find the bathroom code
     LURDL
     UUUUD
     """
-   Then I should get the bathroom code 1985
+   Then I should get the bathroom code 5DB3
   
  Scenario: Stay if you can't move a direction
   Given I start at key 5
@@ -32,7 +34,7 @@ Feature: Find the bathroom code
     """
     ULL
     """
-   Then I should be at 1
+   Then I should be at 5
   
  Scenario Outline: Moving on the keypad
   Given I start at key <Start at>
@@ -42,13 +44,17 @@ Feature: Find the bathroom code
   Examples: Movement on the keypad
    | Start at | Instruction | New key |
    | 1        | U           | 1       |
-   | 1        | D           | 4       |
+   | 1        | D           | 3       |
    | 1        | L           | 1       |
-   | 1        | R           | 2       |
-   | 5        | U           | 2       |
-   | 5        | D           | 8       |
-   | 5        | L           | 4       |
+   | 1        | R           | 1       |
+   | 5        | U           | 5       |
+   | 5        | D           | 5       |
+   | 5        | L           | 5       |
    | 5        | R           | 6       |
+   | 7        | U           | 3       |
+   | 7        | D           | B       |
+   | 7        | L           | 6       |
+   | 7        | R           | 8       |
    
 
   

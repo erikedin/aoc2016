@@ -1,28 +1,50 @@
+def build_movements(keys):
+    """Build a movement table."""
+    movements = {}
+    rows = len(keys)
+    cols = len(keys[0])
+    for row, col in [(r, c) for r in xrange(0, rows) for c in xrange(0, cols)]:
+        from_key = keys[row][col]
+        from_here = movements.get(from_key, {})
 
-movements = {
-    1: {'U': 1, 'D': 4, 'L': 1, 'R': 2},
-    2: {'U': 2, 'D': 5, 'L': 1, 'R': 3},
-    3: {'U': 3, 'D': 6, 'L': 2, 'R': 3},
-    4: {'U': 1, 'D': 7, 'L': 4, 'R': 5},
-    5: {'U': 2, 'D': 8, 'L': 4, 'R': 6},
-    6: {'U': 3, 'D': 9, 'L': 5, 'R': 6},
-    7: {'U': 4, 'D': 7, 'L': 7, 'R': 8},
-    8: {'U': 5, 'D': 8, 'L': 7, 'R': 9},
-    9: {'U': 6, 'D': 9, 'L': 8, 'R': 9},
-}
+        def is_good(r, c):
+            if r < 0 or r >= rows or c < 0 or c >= cols: return False
+            return keys[r][c] != ' ' 
+
+        from_here['U'] = keys[row - 1][col] if is_good(row - 1, col) else from_key
+        from_here['D'] = keys[row + 1][col] if is_good(row + 1, col) else from_key
+        from_here['L'] = keys[row][col - 1] if is_good(row, col - 1) else from_key
+        from_here['R'] = keys[row][col + 1] if is_good(row, col + 1) else from_key
+
+        movements[from_key] = from_here
+    return movements
+         
 
 class Keypad(object):
-    def __init__(self):
-        self.key = 5
-        self.code = 0
+    def __init__(self, keys):
+        self.key = '5'
+        self.code = ''
+        self.movements = build_movements(keys)
     
     def move(self, instruction):
-        from_here = movements[self.key]
+        from_here = self.movements[self.key]
         self.key  = from_here[instruction]
     
     def follow(self, lines_of_instructions):
         for instructions in lines_of_instructions:
             for i in instructions:
                 self.move(i)
-            self.code = self.code * 10 + self.key
-        
+            self.code += self.key
+
+    @classmethod
+    def parse_keys(clazz, text):
+        """Parse keys from a keypad image.
+
+        >>> Keypad.parse_keys("123\\n456\\n789")
+        [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
+        >>> Keypad.parse_keys("  123\\na456b\\n789  ")
+        [[' ', ' ', '1', '2', '3'], ['a', '4', '5', '6', 'b'], ['7', '8', '9', ' ', ' ']]
+        """
+        lines = text.split('\n')
+        keys = [list(x) for x in lines]
+        return keys

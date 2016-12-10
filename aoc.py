@@ -13,6 +13,6 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print __doc__
         sys.exit(1)
-    
+
     day = sys.argv[1]
     aoc2016.main(day)

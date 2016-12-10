@@ -72,3 +72,24 @@ def step_impl(context):
 def step_impl(context):
     lines = context.text.split('\n')
     context.rooms_and_checksums = rooms.make_rooms_and_checksums(lines)
+
+@when(u'I decrypt the name')
+def step_impl(context):
+    context.name = context.room.decrypt_name()
+
+@then(u'the name should be "{name}"')
+def step_impl(context, name):
+    assert context.name == name, "Expected {} but got {}".format(name, context.name)
+
+@given(u'a character {cipher_char} and a sector id {sector_id:d}')
+def step_impl(context, cipher_char, sector_id):
+    context.cipher_char = cipher_char
+    context.sector_id = sector_id
+
+@when(u'I decrypt the character')
+def step_impl(context):
+    context.decrypted_char = rooms.decrypt_char(context.cipher_char, context.sector_id)
+
+@then(u'I should get the decrypted character "{decrypted_char}"')
+def step_impl(context, decrypted_char):
+    assert context.decrypted_char == decrypted_char, "Expected {}, but got {}".format(decrypted_char, context.decrypted_char)

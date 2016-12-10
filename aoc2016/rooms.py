@@ -19,6 +19,9 @@ class Room:
             return -1 if ordering.less_than(x, y) else 1
         checksum_letters = sorted(freqs.keys(), cmp=comp)
         return ''.join(checksum_letters[:5])
+    
+    def decrypt_name(self):
+        return ''.join([decrypt_char(x, self.sector_id) for x in self.name])
 
 class RoomWithChecksum:
     def __init__(self, room, checksum):
@@ -57,3 +60,11 @@ def make_rooms_and_checksums(lines):
     r = re.compile("([a-z0-9\-]+)\[([a-z]+)\]")
     matches = [r.search(x) for x in lines]
     return [RoomWithChecksum(make_room(m.group(1)), m.group(2)) for m in matches]
+
+def decrypt_char(c, sector_id):
+    if c == "-": return " "
+    ordinal = ord(c)
+    shift = sector_id % 26
+    if shift + ordinal > ord('z'):
+        shift -= 26
+    return chr(ordinal + shift)

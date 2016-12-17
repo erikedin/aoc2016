@@ -33,6 +33,31 @@ class DoorBreaker:
             password += c
         return password
 
+class SecondDoorBreaker(DoorBreaker):
+    def __init__(self, door_id):
+        DoorBreaker.__init__(self, door_id)
+        self.password = None
+
+    def set_length(self, length):
+        DoorBreaker.set_length(self, length)
+        self.password = [None for i in xrange(0, length)] 
+
+    def find_password(self):
+        while True:
+            self.find_next_valid_index()
+            c = self.password_char.get_char(self.current_hash)
+            pos = self.password_char.get_pos(self.current_hash)
+            self.current_index += 1
+            if not pos is None:
+                self.fill_password(pos, c)
+            if all(self.password): break
+        return ''.join(self.password)       
+
+    def fill_password(self, index, c):
+        if self.password[index]:
+            return None
+        self.password[index] = c
+
 def five_zeroes_condition(hash):
     return hash.hex()[:5] == "00000"
 
@@ -42,6 +67,21 @@ class PasswordCharIndex:
     
     def get_char(self, hash):
         return hash.hex()[self.index - 1]
+
+class SecondPasswordCharIndex:
+    def __init__(self, pos_th, char_th, password_length):
+        self.pos_index = pos_th - 1
+        self.char_index = char_th - 1
+        self.password_length = password_length
+    
+    def get_char(self, hash):       
+        c = hash.hex()[self.char_index]
+        return c
+
+    def get_pos(self, hash):
+        pos = int(hash.hex()[self.pos_index], 16)
+        if pos >= self.password_length: return None
+        return pos
 
 class MD5:
     def hash(self, s):

@@ -15,16 +15,19 @@ Feature: Find password for security door
          When I hash door id and the index
          Then I should get the password character 1
     
+    @slow
     Scenario: The first index
         Given that the current hash index is 0
          When I want to find the next valid index
          Then the current index should be 3231929
 
+    @slow
     Scenario: The second index
         Given that the current hash index is 3231930
          When I want to find the next valid index
          Then the current index should be 5017308     
 
+    @slow
     Scenario: Find a full password
          When I find the password for the door
          Then the password should be 18f47a30

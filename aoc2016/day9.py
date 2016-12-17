@@ -50,10 +50,10 @@ def decompress(compressed):
 
 def decompressed_length2(compressed):
     """
-    >>> decompress2('ADVENT')
-    'ADVENT'
-    >>> decompress2('X(8x2)(3x3)ABCY')
-    'XABCABCABCABCABCABCY'
+    >>> decompressed_length2('ADVENT')
+    6
+    >>> decompressed_length2('X(8x2)(3x3)ABCY')
+    20
     """
     result = 0
     while compressed:
